@@ -109,8 +109,7 @@ def add_visit(
 def cancel_visit(conn: sqlite3.Connection, visit_id: int) -> bool:
     """Oznacza wizytę jako odwołaną. Zwraca True, jeśli wizyta istniała."""
     cursor = conn.execute(
-        "UPDATE visits SET status = 'cancelled' "
-        "WHERE id = ? AND status != 'cancelled'",
+        "UPDATE visits SET status = 'cancelled' WHERE id = ? AND status != 'cancelled'",
         (visit_id,),
     )
     conn.commit()
@@ -118,9 +117,7 @@ def cancel_visit(conn: sqlite3.Connection, visit_id: int) -> bool:
 
 
 def _doctor_exists(conn: sqlite3.Connection, doctor_id: int) -> bool:
-    row = conn.execute(
-        "SELECT 1 FROM doctors WHERE id = ?", (doctor_id,)
-    ).fetchone()
+    row = conn.execute("SELECT 1 FROM doctors WHERE id = ?", (doctor_id,)).fetchone()
     return row is not None
 
 

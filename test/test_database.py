@@ -20,9 +20,7 @@ def test_init_seeds_doctors(conn):
 
 def test_add_and_list_visit(conn):
     doctor_id = database.list_doctors(conn)[0]["id"]
-    visit_id = database.add_visit(
-        conn, "Jan Testowy", doctor_id, "2026-07-01T10:00:00"
-    )
+    visit_id = database.add_visit(conn, "Jan Testowy", doctor_id, "2026-07-01T10:00:00")
     visits = database.list_visits(conn)
     assert len(visits) == 1
     assert visits[0]["id"] == visit_id
@@ -43,9 +41,7 @@ def test_add_visit_rejects_unknown_doctor(conn):
 
 def test_cancel_visit(conn):
     doctor_id = database.list_doctors(conn)[0]["id"]
-    visit_id = database.add_visit(
-        conn, "Jan Testowy", doctor_id, "2026-07-01T10:00:00"
-    )
+    visit_id = database.add_visit(conn, "Jan Testowy", doctor_id, "2026-07-01T10:00:00")
     assert database.cancel_visit(conn, visit_id) is True
     assert database.list_visits(conn)[0]["status"] == "cancelled"
     # Druga próba odwołania tej samej wizyty zwraca False.
