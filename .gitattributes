@@ -1,0 +1,8 @@
+# Normalizacja końców linii: w repozytorium zawsze LF.
+* text=auto eol=lf
+
+# Pliki binarne — bez modyfikacji.
+*.png binary
+*.jpg binary
+*.ico binary
+*.db binary

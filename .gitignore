@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Środowiska wirtualne
+.venv/
+venv/
+
+# Lokalna baza danych SQLite
+*.db
+
+# IDE / system operacyjny
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
