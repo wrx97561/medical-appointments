@@ -9,9 +9,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 from backend import api, database
 
-FRONTEND_DIR = os.path.join(
-    os.path.dirname(os.path.dirname(__file__)), "frontend"
-)
+FRONTEND_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
 
 
 class AppRequestHandler(BaseHTTPRequestHandler):
@@ -67,9 +65,7 @@ class AppRequestHandler(BaseHTTPRequestHandler):
         with open(file_path, "rb") as handle:
             data = handle.read()
         self.send_response(200)
-        self.send_header(
-            "Content-Type", content_type or "application/octet-stream"
-        )
+        self.send_header("Content-Type", content_type or "application/octet-stream")
         self.send_header("Content-Length", str(len(data)))
         self.end_headers()
         self.wfile.write(data)
@@ -87,9 +83,7 @@ class AppRequestHandler(BaseHTTPRequestHandler):
         print(f"{self.address_string()} - {fmt % args}")
 
 
-def create_server(
-    host: str, port: int, db_path: str
-) -> ThreadingHTTPServer:
+def create_server(host: str, port: int, db_path: str) -> ThreadingHTTPServer:
     """Tworzy serwer, inicjalizuje bazę i zwraca gotowy obiekt serwera."""
     conn = database.connect(db_path)
     try:
