@@ -1,0 +1,2 @@
+# Zależności deweloperskie (sama aplikacja nie wymaga żadnych pakietów).
+pytest>=8.0
