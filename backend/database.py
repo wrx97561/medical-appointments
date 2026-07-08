@@ -94,6 +94,9 @@ def add_visit(
     if not _is_valid_datetime(visit_date):
         raise ValueError("Nieprawidłowy format daty wizyty.")
 
+    if datetime.fromisoformat(visit_date) < datetime.now():
+        raise ValueError("Nie można umówić wizyty w przeszłości.")
+
     now = datetime.now().isoformat(timespec="seconds")
     cursor = conn.execute(
         """
