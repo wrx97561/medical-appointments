@@ -53,6 +53,8 @@ pip install -r requirements-dev.txt
 ## Uruchamianie
 
 ```
+git clone https://github.com/wrx97561/medical-appointments.git
+cd medical-appointments
 python main.py
 ```
 
