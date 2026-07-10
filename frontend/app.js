@@ -2,6 +2,7 @@
 
 const form = document.getElementById("visit-form");
 const doctorSelect = document.getElementById("doctor");
+const visitDateInput = document.getElementById("visit-date");
 const visitsBody = document.querySelector("#visits-table tbody");
 const message = document.getElementById("form-message");
 
@@ -21,9 +22,23 @@ async function loadVisits() {
   const response = await fetch("/api/visits");
   const data = await response.json();
   visitsBody.innerHTML = "";
+  if (data.visits.length === 0) {
+    visitsBody.appendChild(renderEmptyRow());
+    return;
+  }
   for (const visit of data.visits) {
     visitsBody.appendChild(renderVisitRow(visit));
   }
+}
+
+function renderEmptyRow() {
+  const row = document.createElement("tr");
+  const cell = document.createElement("td");
+  cell.colSpan = 5;
+  cell.className = "empty";
+  cell.textContent = "Brak zaplanowanych wizyt.";
+  row.appendChild(cell);
+  return row;
 }
 
 function renderVisitRow(visit) {
@@ -56,17 +71,21 @@ function createCell(text) {
 }
 
 async function cancelVisit(id) {
+  if (!window.confirm("Czy na pewno odwołać tę wizytę?")) {
+    return;
+  }
   await fetch(`/api/visits/${id}`, { method: "DELETE" });
+  showMessage("Wizyta została odwołana.", false);
   await loadVisits();
 }
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
-  message.textContent = "";
+  clearMessage();
   const payload = {
     patient_name: document.getElementById("patient-name").value,
     doctor_id: Number(doctorSelect.value),
-    visit_date: document.getElementById("visit-date").value,
+    visit_date: visitDateInput.value,
   };
   const response = await fetch("/api/visits", {
     method: "POST",
@@ -75,13 +94,34 @@ form.addEventListener("submit", async (event) => {
   });
   if (response.ok) {
     form.reset();
+    setMinVisitDate();
+    showMessage("Wizyta została zarezerwowana.", false);
     await loadVisits();
   } else {
     const data = await response.json();
-    message.textContent =
-      data.error || "Nie udało się zarezerwować wizyty.";
+    showMessage(data.error || "Nie udało się zarezerwować wizyty.", true);
   }
 });
+
+function showMessage(text, isError) {
+  message.textContent = text;
+  message.classList.toggle("error", isError);
+  message.classList.toggle("success", !isError);
+}
+
+function clearMessage() {
+  message.textContent = "";
+  message.classList.remove("error", "success");
+}
+
+function setMinVisitDate() {
+  const now = new Date();
+  now.setSeconds(0, 0);
+  const offsetMs = now.getTimezoneOffset() * 60000;
+  visitDateInput.min = new Date(now.getTime() - offsetMs)
+    .toISOString()
+    .slice(0, 16);
+}
 
 function formatDate(value) {
   const date = new Date(value);
@@ -91,4 +131,5 @@ function formatDate(value) {
   return date.toLocaleString("pl-PL");
 }
 
+setMinVisitDate();
 loadDoctors().then(loadVisits);

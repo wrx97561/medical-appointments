@@ -7,6 +7,7 @@
   --muted: #6b7280;
   --border: #e5e7eb;
   --danger: #dc2626;
+  --success: #16a34a;
 }
 
 * {
@@ -97,10 +98,17 @@ button.cancel:hover {
 }
 
 .message {
-  color: var(--danger);
   font-size: 0.9rem;
   margin: 0;
   min-height: 1.2rem;
+}
+
+.message.error {
+  color: var(--danger);
+}
+
+.message.success {
+  color: var(--success);
 }
 
 table {
@@ -119,4 +127,10 @@ td {
 th {
   color: var(--muted);
   font-weight: 600;
+}
+
+td.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 1.2rem 0.5rem;
 }
